@@ -21,3 +21,8 @@ core banking functionalities and modern application development practices.
 - Hands-on learning
 - Full-stack development practice
 - Interview and portfolio showcase
+
+### Commands-
+- To start server >npm run dev
+- To start json server >json-server --watch db.json --port 3001
+
