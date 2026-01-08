@@ -4,43 +4,46 @@ import axios from "axios";
 
 function Signup() {
   const [registerForm, setRegisterForm] = useState({
+    name: "",
     email: "",
     password: "",
-    role: "",
+    dob: "",
+    role: "CLERK",
   });
 
   const handleChange = (e) => {
-    const{name,value}=e.target;
-    setRegisterForm((prev)=>({
+    const { name, value } = e.target;
+    setRegisterForm((prev) => ({
       ...prev,
-      [name]:name==="role"? value.toUpperCase():value
+      [name]: value,
     }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    //check if user already exists.
-    const check = axios.get(
-      `http://localhost:3001/users?email=${registerForm.email}`
-    );
-    const existing = (await check).data;
-
-    if (existing.length > 0) {
-      alert("User already exists");
-      return;
-    }
-    // save user in db.json
     try {
-      const result = await axios.post(
-        "http://localhost:3001/users",
+      const response = await axios.post(
+        "http://localhost:8080/api/registration/signup",
         registerForm
       );
-      if (result.status === 201) {
-        alert("user saved successfully");
+
+      if (response.status === 201) {
+        alert("Staff registered successfully");
+        setRegisterForm({
+          name: "",
+          email: "",
+          password: "",
+          dob: "",
+          role: "CLERK",
+        });
       }
-    } catch (erroe) {
-      console.error("Error while registring");
+    } catch (error) {
+      if (error.response?.status === 409) {
+        alert("User already exists");
+      } else {
+        alert("Registration failed");
+      }
     }
   };
 
@@ -54,55 +57,61 @@ function Signup() {
           className="bg-white p-6 rounded-lg shadow-md w-full max-w-sm space-y-4"
         >
           <h2 className="text-2xl font-bold text-center text-blue-600">
-            Registration
+            Staff Registration
           </h2>
 
-          {/* Email */}
-          <div>
-            <label className="block text-sm font-medium mb-1">Email</label>
-            <input
-              type="email"
-              name="email"
-              value={registerForm.email}
-              onChange={handleChange}
-              placeholder="Enter email"
-              className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
-            />
-          </div>
+          <input
+            type="text"
+            name="name"
+            placeholder="Name"
+            value={registerForm.name}
+            onChange={handleChange}
+            required
+            className="w-full border px-3 py-2 rounded"
+          />
 
-          {/* Password */}
-          <div>
-            <label className="block text-sm font-medium mb-1">Password</label>
-            <input
-              type="password"
-              name="password"
-              value={registerForm.password}
-              onChange={handleChange}
-              placeholder="Enter password"
-              className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
-            />
-          </div>
-          {/* role */}
-          <div>
-            <label className="block text-sm font-medium mb-1">Role</label>
-            <input
-              type="text"
-              name="role"
-              value={registerForm.role}
-              onChange={handleChange}
-              placeholder="Enter role"
-              className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
-            />
-          </div>
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            value={registerForm.email}
+            onChange={handleChange}
+            required
+            className="w-full border px-3 py-2 rounded"
+          />
 
-          {/* Button */}
-          <button
-            type="submit"
-            className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            value={registerForm.password}
+            onChange={handleChange}
+            required
+            className="w-full border px-3 py-2 rounded"
+          />
+
+          <input
+            type="date"
+            name="dob"
+            value={registerForm.dob}
+            onChange={handleChange}
+            required
+            className="w-full border px-3 py-2 rounded"
+          />
+
+          {/* Role Dropdown */}
+          <select
+            name="role"
+            value={registerForm.role}
+            onChange={handleChange}
+            className="w-full border px-3 py-2 rounded"
           >
+            <option value="CLERK">Clerk</option>
+            <option value="MANAGER">Manager</option>
+            <option value="ADMIN">Admin</option>
+          </select>
+
+          <button className="w-full bg-blue-600 text-white py-2 rounded">
             Sign Up
           </button>
         </form>

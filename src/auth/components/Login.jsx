@@ -22,20 +22,21 @@ function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const loginRes = await axios.get(
-        `http://localhost:3001/users?email=${loginForm.email}&password=${loginForm.password}`
+      const loginRes = await axios.post(
+        "http://localhost:8080/api/auth/login",
+        loginForm
       );
 
       if (loginRes.data.length === 0) {
         alert("Invalid email or password");
         return;
       }
-      const user = loginRes.data[0];
-
-      login(user.token, user.role,user);
+      const user = loginRes.data;
+      localStorage.setItem("token", user.token);
+      login(user.token, user.role, user);
       if (user.role === "CUSTOMER") {
         navigate("/customerDashboard");
-      } else if(user.role==="ADMIN") {
+      } else if (user.role === "ADMIN") {
         navigate("/adminDashboard");
       }
     } catch (error) {

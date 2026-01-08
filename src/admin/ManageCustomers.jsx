@@ -6,11 +6,13 @@ function ManageCustomers() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3001/users?role=CUSTOMER")
+      .get("http://localhost:8080/api/admin/getAllAccounts", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
       .then((res) => setCustomers(res.data))
-      .catch((error) =>
-        console.log("Error while fetching customers", error)
-      );
+      .catch((err) => console.error(err));
   }, []);
 
   return (
@@ -20,14 +22,19 @@ function ManageCustomers() {
       {customers.length === 0 && <p>No customers found</p>}
 
       {customers.map((customer) => (
-        <div
-          key={customer.id}
-          className="border p-3 mb-3 rounded shadow"
-        >
-          <p><b>Email:</b> {customer.email}</p>
-          <p><b>Balance:</b> ₹{customer.balance}</p>
-          <p><b>Account Type:</b> {customer.accountType}</p>
-          <p><b>Account Number:</b> {customer.accountNumber}</p>
+        <div key={customer.id} className="border p-3 mb-3 rounded shadow">
+          <p>
+            <b>Name:</b> {customer.name}
+          </p>
+          <p>
+            <b>Balance:</b> ₹{customer.balance}
+          </p>
+          <p>
+            <b>Account Type:</b> {customer.accountType}
+          </p>
+          <p>
+            <b>Account Number:</b> {customer.accountNumber}
+          </p>
         </div>
       ))}
     </div>

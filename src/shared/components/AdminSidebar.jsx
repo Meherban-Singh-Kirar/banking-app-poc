@@ -7,6 +7,9 @@ function AdminSidebar() {
         <NavLink className="block hover:text-blue-300" to="manageCustomers">
           All Customers
         </NavLink>
+         <NavLink className="block hover:text-blue-300" to="accounts">
+          Create an account
+        </NavLink>
       </nav>
     </div>
   );

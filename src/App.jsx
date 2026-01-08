@@ -13,6 +13,7 @@ import CustomerLayout from "./layouts/CustomerLayout";
 import TransactionHistory from "./transactions/TransactionHistory";
 import AdminLayout from "./layouts/AdminLayout";
 import ManageCustomers from "./admin/ManageCustomers";
+import Accounts from "./accounts/components/accounts";
 
 export default function App() {
   return (
@@ -32,6 +33,7 @@ export default function App() {
       >
         <Route index element={<AdminDashboard />} />
         <Route path="manageCustomers" element={<ManageCustomers />} />
+        <Route path="accounts" element={<Accounts />} />
       </Route>
 
       {/* CUSTOMER ROUTES */}
