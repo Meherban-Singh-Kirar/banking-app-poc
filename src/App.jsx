@@ -13,7 +13,7 @@ import CustomerLayout from "./layouts/CustomerLayout";
 import TransactionHistory from "./transactions/TransactionHistory";
 import AdminLayout from "./layouts/AdminLayout";
 import ManageCustomers from "./admin/ManageCustomers";
-import Accounts from "./accounts/components/accounts";
+import Accounts from "./accounts/components/Accounts";
 
 export default function App() {
   return (
